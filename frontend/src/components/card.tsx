@@ -15,7 +15,10 @@ interface CardThingProps {
   fetchTime: string;
 }
 
-export function CardThing({ card, fetchTime }: CardThingProps): JSX.Element {
+export function MagicCardWithPrice({
+  card,
+  fetchTime,
+}: CardThingProps): JSX.Element {
   const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
 
   return (
