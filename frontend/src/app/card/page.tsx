@@ -13,7 +13,6 @@ console.log("result", result);
 
 let secondFace = null;
 
-// if result.name contains the string " // ", split it on that string and use the first part
 if (result.name.includes(" // ")) {
   const halves = result.name.split(" // ");
   result.name = halves[0];
@@ -25,7 +24,7 @@ if (result.name.includes(" // ")) {
 }
 
 function makeCard(name: string, url: string, price: number) {
-  const displayName = result.name
+  const displayName = name
     .split(", ")
     .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));
 
@@ -33,13 +32,11 @@ function makeCard(name: string, url: string, price: number) {
 
   // displayName.push(", The Freshmaker");
 
-  const card = {
+  return {
     url: url,
     name: displayName,
     price: price,
   };
-
-  return card;
 }
 
 let card = makeCard(
