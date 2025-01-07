@@ -64,6 +64,8 @@ export function MagicCardWithPrice({
   }
 
   const mainCard = renderCard(card);
+  const backCard = side2 ? renderCard(side2) : undefined;
+  const partnerCard = partner ? renderCard(partner) : undefined;
 
   return (
     <div
@@ -76,8 +78,8 @@ export function MagicCardWithPrice({
       }}
     >
       {mainCard}
-      {mainCard}
-      {mainCard}
+      {backCard}
+      {partnerCard}
     </div>
   );
 }
