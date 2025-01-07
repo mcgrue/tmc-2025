@@ -7,7 +7,13 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      belerenTitle: ["var(--font-beleren-title)"],
+    },
     extend: {
+      fontFamily: {
+        belerenTitle: ["var(--font-beleren-title)"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
