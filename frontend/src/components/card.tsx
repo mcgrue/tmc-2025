@@ -2,6 +2,8 @@ import Image from "next/image";
 import { type ScryCard } from "@/scryfall/ScryCard";
 import { BelerenTitle } from "@/fonts/Beleren";
 
+const BACKGROUND_COLOR = "#222";
+
 interface CardThingProps {
   card: ScryCard;
   side2: ScryCard | undefined;
@@ -12,7 +14,51 @@ interface CardThingProps {
 
 function renderCardImage(name: string, url: string): JSX.Element {
   return (
-    <div>
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "8px",
+          height: "8px",
+          backgroundColor: BACKGROUND_COLOR,
+          clipPath: "polygon(0 0, 100% 0, 0 100%)",
+        }}
+      ></div>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: "8px",
+          height: "8px",
+          backgroundColor: BACKGROUND_COLOR,
+          clipPath: "polygon(100% 0, 100% 100%, 0 0)",
+        }}
+      ></div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "8px",
+          height: "8px",
+          backgroundColor: BACKGROUND_COLOR,
+          clipPath: "polygon(0 100%, 100% 100%, 0 0)",
+        }}
+      ></div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "8px",
+          height: "8px",
+          backgroundColor: BACKGROUND_COLOR,
+          clipPath: "polygon(100% 100%, 100% 0, 0 100%)",
+        }}
+      ></div>
       <Image
         src={url}
         alt={name}
@@ -78,7 +124,7 @@ export function MagicCardWithPrice({
   return (
     <div
       style={{
-        backgroundColor: "#222",
+        backgroundColor: BACKGROUND_COLOR,
         borderRadius: "8px",
         padding: "20px",
         display: "flex",
