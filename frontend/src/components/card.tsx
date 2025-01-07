@@ -1,13 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-
+import { type ScryCard } from "@/scryfall/ScryCard";
 import { BelerenTitle } from "@/fonts/Beleren";
-
-export type ScryCard = {
-  url: string;
-  name: string;
-  price: number;
-};
 
 interface CardThingProps {
   card: ScryCard;
@@ -37,12 +31,31 @@ export function MagicCardWithPrice({
         style={{ margin: "auto" }}
       />
       <div style={{ textAlign: "center" }}>
-        <h1
-          style={{ color: "antiquewhite", fontSize: "2em" }}
-          className={`${BelerenTitle.variable} font-belerenTitle`}
-        >
-          {card.name}
-        </h1>
+        {Array.isArray(card.name) ? (
+          card.name.map((name, index) => (
+            <h1
+              key={index}
+              style={{
+                color: "antiquewhite",
+                fontSize: index === 0 ? "2em" : "1em",
+                marginTop: "-.5em",
+              }}
+              className={`${BelerenTitle.variable} font-belerenTitle`}
+            >
+              {name}
+            </h1>
+          ))
+        ) : (
+          <h1
+            style={{
+              color: "antiquewhite",
+              fontSize: "2em",
+            }}
+            className={`${BelerenTitle.variable} font-belerenTitle`}
+          >
+            {card.name}
+          </h1>
+        )}
       </div>
       <div style={{ textAlign: "center", fontSize: ".8em", color: "#c7b8a4" }}>
         ${card.price} (USD){fetchtimeText}

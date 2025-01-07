@@ -1,13 +1,35 @@
 import Image from "next/image";
 import { BelerenTitle } from "@/fonts/Beleren";
 import { format } from "date-fns";
-import { MagicCardWithPrice, type ScryCard } from "../../components/card";
+
+import { getCardByName } from "@/scryfall/scryfall";
+import { type ScryCard } from "@/scryfall/ScryCard";
+
+import { MagicCardWithPrice } from "../../components/card";
+
+const result = await getCardByName("Uril, the Miststalker");
+console.log("result", result);
+
+const displayName = result.name
+  .split(", ")
+  .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));
+
+displayName.push(", The Freshmaker");
+
+const url = result.card_faces[0].image_uris.normal;
+const price = result.prices.usd ? result.prices.usd : result.prices.usd_foil;
 
 const card: ScryCard = {
-  url: "https://cards.scryfall.io/large/front/6/5/651626f5-aca6-4653-aa27-36c919566cb0.jpg?1720467986",
-  name: "Magical Hacker",
-  price: 0.01,
+  url: url,
+  name: displayName,
+  price: price,
 };
+
+// const card {
+//   name: displayName,
+//   url,
+//   price: result.prices.usd,
+// }
 
 const fetchTime = format(new Date(), "MMMM do, yyyy");
 
@@ -21,6 +43,7 @@ export default function DrawCard() {
       }}
     >
       <MagicCardWithPrice card={card} fetchTime={fetchTime} />
+      <pre>{JSON.stringify(result, null, 2)}</pre>
     </div>
   );
 }
