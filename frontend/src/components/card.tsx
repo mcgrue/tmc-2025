@@ -1,8 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { type ScryCard } from "@/scryfall/ScryCard";
 import { BelerenTitle } from "@/fonts/Beleren";
-import { debug } from "console";
 
 interface CardThingProps {
   card: ScryCard;
@@ -10,6 +8,20 @@ interface CardThingProps {
   partner: ScryCard | undefined;
 
   fetchTime: string;
+}
+
+function renderCardImage(name: string, url: string): JSX.Element {
+  return (
+    <div>
+      <Image
+        src={url}
+        alt={name}
+        width={250}
+        height={348}
+        style={{ margin: "auto" }}
+      />
+    </div>
+  );
 }
 
 function renderCard(
@@ -28,13 +40,7 @@ function renderCard(
         paddingRight: "10px",
       }}
     >
-      <Image
-        src={card.url}
-        alt={card.name}
-        width={250}
-        height={348}
-        style={{ margin: "auto" }}
-      />
+      {renderCardImage(card.name, card.url)}
       <div style={{ textAlign: "center" }}>
         {names.map((name, index) => (
           <h1
