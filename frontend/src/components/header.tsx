@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BelerenTitle } from "../fonts/Beleren";
+import { BelerenTitle } from "@/fonts/Beleren";
 
 export default function Header() {
   return ( 
