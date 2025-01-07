@@ -2,19 +2,21 @@ import Image from "next/image";
 import { BelerenTitle } from "@/fonts/Beleren";
 import { format } from "date-fns";
 
-import { getCardByName } from "@/scryfall/scryfall";
+import { getCardByName, getJank } from "@/scryfall/scryfall";
 import { type ScryCard } from "@/scryfall/ScryCard";
 
 import { MagicCardWithPrice } from "../../components/card";
 
-const result = await getCardByName("Uril, the Miststalker");
+const result = await getJank(0.82);
 console.log("result", result);
 
 const displayName = result.name
   .split(", ")
   .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));
 
-displayName.push(", The Freshmaker");
+// displayName.pop();
+
+// displayName.push(", The Freshmaker");
 
 const url = result.card_faces[0].image_uris.normal;
 const price = result.prices.usd ? result.prices.usd : result.prices.usd_foil;

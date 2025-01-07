@@ -15,6 +15,8 @@ export function MagicCardWithPrice({
 }: CardThingProps): JSX.Element {
   const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
 
+  const names: string[] = Array.isArray(card.name) ? card.name : [card.name];
+
   return (
     <div
       style={{
@@ -31,31 +33,19 @@ export function MagicCardWithPrice({
         style={{ margin: "auto" }}
       />
       <div style={{ textAlign: "center" }}>
-        {Array.isArray(card.name) ? (
-          card.name.map((name, index) => (
-            <h1
-              key={index}
-              style={{
-                color: "antiquewhite",
-                fontSize: index === 0 ? "2em" : "1em",
-                marginTop: "-.5em",
-              }}
-              className={`${BelerenTitle.variable} font-belerenTitle`}
-            >
-              {name}
-            </h1>
-          ))
-        ) : (
+        {names.map((name, index) => (
           <h1
+            key={index}
             style={{
               color: "antiquewhite",
-              fontSize: "2em",
+              fontSize: index === 0 ? "2em" : "1em",
+              marginTop: index === 0 ? "0" : "-.5em",
             }}
             className={`${BelerenTitle.variable} font-belerenTitle`}
           >
-            {card.name}
+            {name}
           </h1>
-        )}
+        ))}
       </div>
       <div style={{ textAlign: "center", fontSize: ".8em", color: "#c7b8a4" }}>
         ${card.price} (USD){fetchtimeText}
