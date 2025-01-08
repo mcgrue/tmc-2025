@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <ol className="list-inside text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
       <li>
-        <Link href="/" style={linkCss}>
+        <Link href="/janklord" style={linkCss}>
           Roll a Janklord
         </Link>
         <div style={blurbCss}>
