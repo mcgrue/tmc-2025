@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 
 import { getExactByName, getJank, getRandom } from "@/lib/scryfall";
+import { type ScryCard } from "@/scryfall/ScryCard";
 
 function extractPartnerWithName(text: string) {
   const partnerWithPattern = /Partner with ([^()]+) \(/;
@@ -8,12 +9,12 @@ function extractPartnerWithName(text: string) {
   return match ? match[1].trim() : null;
 }
 
-export async function rollJanklord(jankPrice: number) {
-  const result = await getJank(jankPrice); // 4
+export async function rollJanklord(jankPrice: number): JankTablet {
+  const result = await getJank(jankPrice);
   // const result = await getExactByName("Brallin, Skyshark Rider");
   // const result = await getExactByName("Amy Pond");
-  // const result = await getExactByName("The Eighth Doctor"); //1
-  // const result = await getExactByName("Alena, Kessig Trapper"); //2
+  // const result = await getExactByName("The Eighth Doctor");
+  // const result = await getExactByName("Alena, Kessig Trapper");
 
   let secondFace = null;
 
@@ -27,7 +28,7 @@ export async function rollJanklord(jankPrice: number) {
     };
   }
 
-  function makeCard(name: string, url: string, price: number) {
+  function makeCard(name: string, url: string, price: number): ScryCard {
     const displayName = name
       .split(", ")
       .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));
