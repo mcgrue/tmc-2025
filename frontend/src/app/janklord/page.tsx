@@ -1,5 +1,7 @@
 "use client";
 
+import { BelerenTitle } from "@/fonts/Beleren";
+
 import React, { useState } from "react";
 
 import { MagicCardWithPrice } from "@/components/card";
@@ -36,6 +38,17 @@ export default function DrawJankTablet() {
 
   return (
     <div>
+      <h1
+        className={`${BelerenTitle.variable} font-belerenTitle`}
+        style={{
+          color: "antiquewhite",
+          fontSize: "1.5em",
+          textAlign: "center",
+        }}
+      >
+        Today's $0.79 Janklords are...
+      </h1>
+
       {state[0].card.name && (
         <div
           style={{
@@ -74,7 +87,7 @@ export default function DrawJankTablet() {
           button.textContent = "Fetching jank...";
           await doRoll();
           button.disabled = false;
-          button.textContent = "Roll Three Jankmanders";
+          button.textContent = "Roll Three MORE Jankmanders";
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = "#888";
