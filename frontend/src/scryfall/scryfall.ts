@@ -1,6 +1,6 @@
 import * as Scry from "scryfall-sdk";
 
-export async function getCardByName(name: string): Promise<Scry.Card> {
+export async function getExactByName(name: string): Promise<Scry.Card> {
   return Scry.Cards.byName(name, true);
 }
 
@@ -18,4 +18,8 @@ export async function getJank(jankPrice: number): Promise<Scry.Card> {
   return Scry.Cards.random(
     "(type:creature type:legendary) -type:battle usd<=" + jankPrice,
   );
+}
+
+export async function getRandom(randomQueryParams: string): Promise<Scry.Card> {
+  return Scry.Cards.random(randomQueryParams);
 }

@@ -8,7 +8,7 @@ interface CardThingProps {
   card: ScryCard;
   side2: ScryCard | undefined;
   partner: ScryCard | undefined;
-
+  jankPrice: number;
   fetchTime: string;
 }
 
@@ -72,9 +72,12 @@ function renderCardImage(name: string, url: string): JSX.Element {
 
 function renderCard(
   card: ScryCard,
-  fetchtimeText: string | undefined
+  fetchtimeText?: string,
+  jankPrice?: number
 ): JSX.Element {
   const names: string[] = Array.isArray(card.name) ? card.name : [card.name];
+
+  let invalid = jankPrice && card.price > jankPrice;
 
   return (
     <div
@@ -92,7 +95,8 @@ function renderCard(
           <h1
             key={index}
             style={{
-              color: "antiquewhite",
+              color: invalid ? "red" : "antiquewhite",
+              textDecoration: invalid ? "line-through" : "none",
               fontSize: index === 0 ? "2em" : "1em",
               marginTop: index === 0 ? "0" : "-.5em",
             }}
@@ -103,7 +107,15 @@ function renderCard(
         ))}
       </div>
       <div style={{ textAlign: "center", fontSize: ".8em", color: "#c7b8a4" }}>
-        ${card.price} (USD){fetchtimeText}
+        <span
+          style={{
+            color: invalid ? "red" : "inherit",
+            textDecoration: invalid ? "line-through" : "none",
+          }}
+        >
+          ${card.price} (USD)
+        </span>
+        {fetchtimeText}
       </div>
     </div>
   );
@@ -113,13 +125,16 @@ export function MagicCardWithPrice({
   card,
   side2,
   partner,
+  jankPrice,
   fetchTime,
 }: CardThingProps): JSX.Element {
   const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
 
   const mainCard = renderCard(card, fetchtimeText);
   const backCard = side2 ? renderCard(side2) : undefined;
-  const partnerCard = partner ? renderCard(partner, fetchtimeText) : undefined;
+  const partnerCard = partner
+    ? renderCard(partner, fetchtimeText, jankPrice)
+    : undefined;
 
   return (
     <div
