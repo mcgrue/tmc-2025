@@ -3,7 +3,10 @@ import { rollJanklord } from "../../lib/janklord";
 
 const JANK_PRICE = 0.79;
 
-const { card, side2, partner, fetchTime } = await rollJanklord(JANK_PRICE);
+const { card, side2, partner, fetchTime } = await rollJanklord(
+  JANK_PRICE,
+  true
+);
 
 // type JankTablet = {};
 
