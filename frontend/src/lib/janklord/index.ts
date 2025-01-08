@@ -22,6 +22,7 @@ export async function rollJanklord(
   // const result = await getExactByName("Amy Pond");
   // const result = await getExactByName("The Eighth Doctor");
   // const result = await getExactByName("Alena, Kessig Trapper");
+  // const result = await getExactByName("Faceless One");
 
   let secondFace = null;
 
@@ -80,8 +81,18 @@ export async function rollJanklord(
       `(type:creature type:legendary) usd<=${jankPrice} o:/Partner(?! with)/ name:/^(?!.*${result.name}).*/`,
       noSilliness,
     );
-  }
-  if (result.oracle_text && result.oracle_text.includes("Doctor's companion")) {
+  } else if (
+    result.oracle_text &&
+    result.oracle_text.lastIndexOf("\nChoose a Background ") >= 0
+  ) {
+    console.log("needs a background");
+    partner = await getRandom(
+      `(type:background) usd<=${jankPrice} `,
+      noSilliness,
+    );
+  } else if (
+    result.oracle_text && result.oracle_text.includes("Doctor's companion")
+  ) {
     console.log("is a doctors companion");
     partner = await getRandom(
       `(type:creature type:legendary) usd<=${jankPrice} (type:doctor type:time type:lord)`,
