@@ -51,7 +51,7 @@ export default function DrawJankTablet() {
           textAlign: "center",
         }}
       >
-        Today's $0.79 Janklords are...
+        Today&apos;s $0.79 Janklords are...
       </h1>
 
       {state[0].card.name && (
