@@ -93,7 +93,7 @@ export default function DrawJankTablet() {
           await doRoll();
           button.disabled = false;
           button.textContent = `Roll Three MORE ${
-            !sillinessAllowed ? "" : "vErY sErIoUs"
+            sillinessAllowed ? "" : "vErY sErIoUs"
           } Jankmanders`;
         }}
         onMouseEnter={(e) => {
@@ -103,7 +103,7 @@ export default function DrawJankTablet() {
           e.currentTarget.style.backgroundColor = "#666";
         }}
       >
-        Roll Three <i>{!sillinessAllowed ? "" : "serious"}</i> Jankmanders
+        Roll Three <i>{sillinessAllowed ? "" : "serious"}</i> Jankmanders
       </button>
       <label style={{ color: "#888", fontSize: ".7em", padding: "1em" }}>
         <input
