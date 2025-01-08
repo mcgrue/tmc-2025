@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import { getExactByName, getJank, getRandom } from "@/lib/scryfall";
-import { type ScryCard } from "@/scryfall/ScryCard";
+import { type ScryCard } from "@/lib/scryfall/ScryCard";
 
 function extractPartnerWithName(text: string) {
   const partnerWithPattern = /Partner with ([^()]+) \(/;
@@ -9,7 +9,7 @@ function extractPartnerWithName(text: string) {
   return match ? match[1].trim() : null;
 }
 
-export async function rollJanklord(jankPrice: number): JankTablet {
+export async function rollJanklord(jankPrice: number): Promise<JankTablet> {
   const result = await getJank(jankPrice);
   // const result = await getExactByName("Brallin, Skyshark Rider");
   // const result = await getExactByName("Amy Pond");
@@ -23,6 +23,7 @@ export async function rollJanklord(jankPrice: number): JankTablet {
     result.name = halves[0];
     secondFace = {
       name: halves[1],
+      // @ts-expect-error: Object is possibly 'null'.
       url: result.card_faces[1].image_uris.normal,
       price: 0,
     };
@@ -44,9 +45,11 @@ export async function rollJanklord(jankPrice: number): JankTablet {
     };
   }
 
-  let card = makeCard(
+  const card = makeCard(
     result.name,
+    // @ts-expect-error: Object is possibly 'null'.
     result.card_faces[0].image_uris.normal,
+    // @ts-expect-error: Object is possibly 'null'.
     result.prices.usd ? result.prices.usd : result.prices.usd_foil,
   );
 
@@ -54,6 +57,7 @@ export async function rollJanklord(jankPrice: number): JankTablet {
     ? makeCard(secondFace.name, secondFace.url, secondFace.price)
     : undefined;
 
+  // @ts-expect-error: Object is possibly 'null'.
   const partnerWithName = extractPartnerWithName(result.oracle_text);
 
   let partner = undefined;
@@ -88,12 +92,22 @@ export async function rollJanklord(jankPrice: number): JankTablet {
   partner = partner
     ? makeCard(
       partner.name,
+      // @ts-expect-error: Object is possibly 'null'.
       partner.card_faces[0].image_uris.normal,
+      // @ts-expect-error: Object is possibly 'null'.
       partner.prices.usd ? partner.prices.usd : partner.prices.usd_foil,
     )
     : undefined;
 
   const fetchTime = format(new Date(), "MMMM do, yyyy");
 
-  return { card, side2, partner, fetchTime };
+  return { card, side2, partner, fetchTime, jankPrice };
 }
+
+export type JankTablet = {
+  card: ScryCard;
+  side2: ScryCard | undefined;
+  partner: ScryCard | undefined;
+  jankPrice: number;
+  fetchTime: string;
+};

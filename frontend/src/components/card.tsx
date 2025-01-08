@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { type ScryCard } from "@/scryfall/ScryCard";
+import { type ScryCard } from "@/lib/scryfall/ScryCard";
 import { BelerenTitle } from "@/fonts/Beleren";
+import { JSX } from "react";
 
 const BACKGROUND_COLOR = "#222";
 
@@ -77,7 +78,7 @@ function renderCard(
 ): JSX.Element {
   const names: string[] = Array.isArray(card.name) ? card.name : [card.name];
 
-  let invalid = jankPrice && card.price > jankPrice;
+  const invalid = jankPrice && card.price > jankPrice;
 
   return (
     <div
@@ -89,7 +90,7 @@ function renderCard(
         paddingRight: "10px",
       }}
     >
-      {renderCardImage(card.name, card.url)}
+      {renderCardImage(card.name[0], card.url)}
       <div style={{ textAlign: "center" }}>
         {names.map((name, index) => (
           <h1

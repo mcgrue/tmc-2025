@@ -1,18 +1,31 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { MagicCardWithPrice } from "../../components/card";
-import { rollJanklord } from "../../lib/janklord";
+import { MagicCardWithPrice } from "@/components/card";
+import { rollJanklord, type JankTablet } from "@/lib/janklord";
+import { type ScryCard } from "@/lib/scryfall/ScryCard";
 
 const JANK_PRICE = 0.79;
 
-const { card, side2, partner, fetchTime } = await rollJanklord(JANK_PRICE);
+// const { card, side2, partner, fetchTime } = await rollJanklord(JANK_PRICE);
 
-type JankTablet = {};
+const emptyCard: ScryCard = {
+  url: "",
+  name: "",
+  price: 0,
+};
+
+const emptyTablet: JankTablet = {
+  card: emptyCard,
+  side2: undefined,
+  partner: undefined,
+  jankPrice: 0,
+  fetchTime: "",
+};
 
 export default function DrawJankTablet() {
-  const [state, setState] = useState([{}, {}, {}]);
+  const [state, setState] = useState([emptyTablet, emptyTablet, emptyTablet]);
 
   const doRoll = async function () {
     const jank1 = await rollJanklord(JANK_PRICE);
@@ -33,7 +46,7 @@ export default function DrawJankTablet() {
             gap: "10px",
           }}
         >
-          {state.map((element: any, index) => (
+          {state.map((element: JankTablet, index) => (
             <MagicCardWithPrice
               key={index}
               card={element.card}
