@@ -38,7 +38,7 @@ export default function Header() {
       </Link>
 
       <Link
-        href="/about"
+        href="/janklord"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
       >
         <Image

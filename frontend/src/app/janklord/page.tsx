@@ -36,7 +36,7 @@ export default function DrawJankTablet() {
 
   return (
     <div>
-      {state[0].card && (
+      {state[0].card.name && (
         <div
           style={{
             backgroundColor: "#111",
