@@ -28,11 +28,16 @@ const emptyTablet: JankTablet = {
 
 export default function DrawJankTablet() {
   const [state, setState] = useState([emptyTablet, emptyTablet, emptyTablet]);
+  const [sillinessAllowed, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!sillinessAllowed);
+  };
 
   const doRoll = async function () {
-    const jank1 = await rollJanklord(JANK_PRICE);
-    const jank2 = await rollJanklord(JANK_PRICE);
-    const jank3 = await rollJanklord(JANK_PRICE);
+    const jank1 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
+    const jank2 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
+    const jank3 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
     setState([jank1, jank2, jank3]);
   };
 
@@ -87,7 +92,9 @@ export default function DrawJankTablet() {
           button.textContent = "Fetching jank...";
           await doRoll();
           button.disabled = false;
-          button.textContent = "Roll Three MORE Jankmanders";
+          button.textContent = `Roll Three MORE ${
+            !sillinessAllowed ? "" : "vErY sErIoUs"
+          } Jankmanders`;
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = "#888";
@@ -96,8 +103,16 @@ export default function DrawJankTablet() {
           e.currentTarget.style.backgroundColor = "#666";
         }}
       >
-        Roll Three Jankmanders
+        Roll Three <i>{!sillinessAllowed ? "" : "serious"}</i> Jankmanders
       </button>
+      <label style={{ color: "#888", fontSize: ".7em", padding: "1em" }}>
+        <input
+          type="checkbox"
+          checked={sillinessAllowed}
+          onChange={handleCheckboxChange}
+        />
+        &nbsp;&nbsp;Un-manders and test cards allowed
+      </label>
     </div>
   );
 }

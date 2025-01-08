@@ -4,13 +4,20 @@ import { getExactByName, getJank, getRandom } from "@/lib/scryfall";
 import { type ScryCard } from "@/lib/scryfall/ScryCard";
 
 function extractPartnerWithName(text: string) {
+  if (!text) {
+    return null;
+  }
+
   const partnerWithPattern = /Partner with ([^()]+) \(/;
   const match = text.match(partnerWithPattern);
   return match ? match[1].trim() : null;
 }
 
-export async function rollJanklord(jankPrice: number): Promise<JankTablet> {
-  const result = await getJank(jankPrice);
+export async function rollJanklord(
+  jankPrice: number,
+  noSilliness: boolean,
+): Promise<JankTablet> {
+  const result = await getJank(jankPrice, noSilliness);
   // const result = await getExactByName("Brallin, Skyshark Rider");
   // const result = await getExactByName("Amy Pond");
   // const result = await getExactByName("The Eighth Doctor");
@@ -71,12 +78,14 @@ export async function rollJanklord(jankPrice: number): Promise<JankTablet> {
     console.log("is a Partner but not with");
     partner = await getRandom(
       `(type:creature type:legendary) usd<=${jankPrice} o:/Partner(?! with)/ name:/^(?!.*${result.name}).*/`,
+      noSilliness,
     );
   }
   if (result.oracle_text && result.oracle_text.includes("Doctor's companion")) {
     console.log("is a doctors companion");
     partner = await getRandom(
       `(type:creature type:legendary) usd<=${jankPrice} (type:doctor type:time type:lord)`,
+      noSilliness,
     );
   } else if (
     result.type_line &&
@@ -86,6 +95,7 @@ export async function rollJanklord(jankPrice: number): Promise<JankTablet> {
     console.log("is a Time Lord Doctor");
     partner = await getRandom(
       `(type:creature type:legendary) usd<=${jankPrice} oracle:Doctor's oracle:Companion`,
+      noSilliness,
     );
   }
 
