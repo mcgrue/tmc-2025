@@ -22,6 +22,7 @@ function renderCardImage(props: RenderCardImageProps): JSX.Element {
 
   const isSilly =
     cardData?.border_color == "silver" ||
+    // @ts-ignore
     cardData?.promo_types?.includes("playtest");
 
   return (
