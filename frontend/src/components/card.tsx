@@ -22,7 +22,7 @@ function renderCardImage(props: RenderCardImageProps): JSX.Element {
 
   const isSilly =
     cardData?.border_color == "silver" ||
-    // @ts-expect-error
+    // @ts-expect-error upstream library is currently out of date; patch was submitted
     cardData?.promo_types?.includes("playtest");
 
   return (
