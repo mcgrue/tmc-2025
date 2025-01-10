@@ -60,7 +60,15 @@ export default function DrawJankTablet() {
     isLoading: boolean
   ) {
     if (isLoading) {
-      return "Fetching jank...";
+      return (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src="/ring-spinner.svg"
+            alt="loading"
+            style={{ filter: "invert(1)" }}
+          />
+        </div>
+      );
     } else {
       return (
         <span>
