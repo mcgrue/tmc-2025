@@ -35,13 +35,13 @@ export async function rollJanklord(
   jankPrice: number,
   noSilliness: boolean,
 ): Promise<JankTablet> {
-  // const result = await getJank(jankPrice, noSilliness);
+  const result = await getJank(jankPrice, noSilliness);
   // const result = await getExactByName("Brallin, Skyshark Rider"); // Partner with Shabraz, the Skyshark
   // const result = await getExactByName("Amy Pond"); // TODO: Partner with Rory, the Last Centurion + Doctor's Companion
   // const result = await getExactByName("The Eighth Doctor"); // Time Lord
   // const result = await getExactByName("Alena, Kessig Trapper"); // Partner (not with)
   // const result = await getExactByName("Faceless One"); // Choose a Background
-  const result = await getExactByName("Dr. Julius Jumblemorph"); // Silly Card
+  // const result = await getExactByName("Dr. Julius Jumblemorph"); // Silly Card
 
   let secondFace = null;
 
