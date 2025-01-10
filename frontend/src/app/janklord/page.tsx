@@ -7,6 +7,9 @@ import React, { useState } from "react";
 import { MagicCardWithPrice } from "@/components/card";
 import { rollJanklord, type JankTablet } from "@/lib/janklord";
 import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { toJankPackNumber } from "@/lib/janklord/JankPackNumber";
+
+import { MAIN_CONTENT_STYLE, COLORS } from "@/lib/styles";
 
 const JANK_PRICE = 0.79;
 
@@ -24,11 +27,12 @@ const emptyTablet: JankTablet = {
   partner: undefined,
   jankPrice: 0,
   fetchTime: "",
+  pack: undefined,
 };
 
 export default function DrawJankTablet() {
   const [state, setState] = useState([emptyTablet, emptyTablet, emptyTablet]);
-  const [sillinessAllowed, setIsChecked] = useState(false);
+  const [sillinessAllowed, setIsChecked] = useState(true);
 
   const handleCheckboxChange = () => {
     setIsChecked(!sillinessAllowed);
@@ -43,68 +47,77 @@ export default function DrawJankTablet() {
 
   return (
     <div>
-      <h1
-        className={`${BelerenTitle.variable} font-belerenTitle`}
+      <div
         style={{
-          color: "antiquewhite",
-          fontSize: "1.5em",
-          textAlign: "center",
+          borderRadius: "8px",
+          padding: "20px",
+
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        Today&apos;s $0.79 Janklords are...
-      </h1>
-
-      {state[0].card.name && (
-        <div
+        <h1
+          className={`${BelerenTitle.variable} font-belerenTitle`}
           style={{
-            backgroundColor: "#111",
-            borderRadius: "8px",
-            padding: "20px",
-            display: "flex",
-            gap: "10px",
+            color: COLORS.FONT_TITLE,
+            fontSize: "1.5em",
+            textAlign: "center",
           }}
         >
-          {state.map((element: JankTablet, index) => (
-            <MagicCardWithPrice
-              key={index}
-              card={element.card}
-              side2={element.side2}
-              partner={element.partner}
-              jankPrice={JANK_PRICE}
-              fetchTime={element.fetchTime}
-            />
-          ))}
-        </div>
-      )}
-      <button
-        style={{
-          backgroundColor: "#666",
-          color: "white",
-          padding: "10px",
-          marginLeft: "50%",
-          marginRight: "50%",
-          borderRadius: "8px",
-          transition: "background-color 0.3s",
-        }}
-        onClick={async (e) => {
-          const button = e.currentTarget;
-          button.disabled = true;
-          button.textContent = "Fetching jank...";
-          await doRoll();
-          button.disabled = false;
-          button.textContent = `Roll Three MORE ${
-            sillinessAllowed ? "" : "vErY sErIoUs"
-          } Jankmanders`;
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = "#888";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = "#666";
-        }}
-      >
-        Roll Three <i>{sillinessAllowed ? "" : "serious"}</i> Jankmanders
-      </button>
+          Today&apos;s $0.79 Janklords are...
+        </h1>
+
+        {state[0].card.name && (
+          <div style={MAIN_CONTENT_STYLE}>
+            {state.map((element: JankTablet, index) => (
+              <MagicCardWithPrice
+                key={index}
+                card={element.card}
+                side2={element.side2}
+                partner={element.partner}
+                jankPrice={JANK_PRICE}
+                fetchTime={element.fetchTime}
+                pack={toJankPackNumber(index + 1)}
+              />
+            ))}
+          </div>
+        )}
+
+        <button
+          style={{
+            backgroundColor: "rgba(234, 88, 12, 0.55)",
+            color: "white",
+            padding: "10px",
+            borderRadius: "8px",
+            marginTop: "2em",
+            width: "10em",
+            transition: "background-color 0.3s",
+          }}
+          onClick={async (e) => {
+            const button = e.currentTarget;
+            button.disabled = true;
+            button.textContent = "Fetching jank...";
+            await doRoll();
+            button.disabled = false;
+            button.textContent = `Roll Three MORE ${
+              sillinessAllowed ? "" : "vErY sErIoUs"
+            } Jankmanders`;
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transition = "filter 0.25s";
+            e.currentTarget.style.filter = "brightness(150%)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transition = "filter 0.25s";
+            e.currentTarget.style.filter = "brightness(100%)";
+          }}
+        >
+          Roll Three <i>{sillinessAllowed ? "" : "serious"}</i> Jankmanders
+        </button>
+      </div>
+
       <label style={{ color: "#888", fontSize: ".7em", padding: "1em" }}>
         <input
           type="checkbox"

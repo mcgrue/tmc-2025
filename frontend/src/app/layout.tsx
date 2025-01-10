@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; // for tailwind layout
 
-import Header from "../components/header";
-import Footer from "../components/footer";
+import { COLORS } from "@/lib/styles";
+import SiteHeader from "@/components/header";
+import SiteFooter from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +29,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        style={{
+          backgroundColor: COLORS.MAIN_BG,
+          color: COLORS.FONT_READABLE,
+        }}
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="grid grid-rows-[20px_1fr_20px] items-start justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-          <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-            <Header />
+        <SiteHeader />
+
+        <div className="grid grid-rows-[1fr] items-start justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+          <main className="flex flex-col p-8 items-center sm:items-start">
             {children}
-            <Footer />
           </main>
         </div>
+        <SiteFooter />
       </body>
     </html>
   );
