@@ -33,16 +33,49 @@ const emptyTablet: JankTablet = {
 export default function DrawJankTablet() {
   const [state, setState] = useState([emptyTablet, emptyTablet, emptyTablet]);
   const [sillinessAllowed, setIsChecked] = useState(true);
+  const [numberRolls, setNumberRolls] = useState(0);
+  const [isLoading, setLoading] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!sillinessAllowed);
   };
 
+  const handleRollButtonClick = () => {
+    doRoll();
+    setNumberRolls(numberRolls + 1);
+  };
+
   const doRoll = async function () {
+    setLoading(true);
     const jank1 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
     const jank2 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
     const jank3 = await rollJanklord(JANK_PRICE, !sillinessAllowed);
     setState([jank1, jank2, jank3]);
+    setLoading(false);
+  };
+
+  const buttonText = function (
+    numberRolls: number,
+    sillinessAllowed: boolean,
+    isLoading: boolean
+  ) {
+    if (isLoading) {
+      return "Fetching jank...";
+    } else {
+      return (
+        <span>
+          Roll Three {numberRolls > 0 ? "MORE" : ""}{" "}
+          <i>
+            {sillinessAllowed
+              ? ""
+              : numberRolls == 0
+              ? "serious"
+              : "vErY sErIoUs"}
+          </i>{" "}
+          Jankmanders
+        </span>
+      );
+    }
   };
 
   return (
@@ -95,7 +128,9 @@ export default function DrawJankTablet() {
             width: "10em",
             transition: "background-color 0.3s",
           }}
-          onClick={async (e) => {
+          onClick={handleRollButtonClick}
+          /*
+async (e) => {
             const button = e.currentTarget;
             button.disabled = true;
             button.textContent = "Fetching jank...";
@@ -104,7 +139,9 @@ export default function DrawJankTablet() {
             button.textContent = `Roll Three MORE ${
               sillinessAllowed ? "" : "vErY sErIoUs"
             } Jankmanders`;
-          }}
+          }
+*/
+
           onMouseEnter={(e) => {
             e.currentTarget.style.transition = "filter 0.25s";
             e.currentTarget.style.filter = "brightness(150%)";
@@ -114,7 +151,7 @@ export default function DrawJankTablet() {
             e.currentTarget.style.filter = "brightness(100%)";
           }}
         >
-          Roll Three <i>{sillinessAllowed ? "" : "serious"}</i> Jankmanders
+          {buttonText(numberRolls, sillinessAllowed, isLoading)}
         </button>
       </div>
 
