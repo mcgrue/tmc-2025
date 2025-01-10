@@ -42,7 +42,8 @@ export async function rollJanklord(
   // const result = await getExactByName("The Eighth Doctor"); // Time Lord
   // const result = await getExactByName("Alena, Kessig Trapper"); // Partner (not with)
   // const result = await getExactByName("Faceless One"); // Choose a Background
-  // const result = await getExactByName("Dr. Julius Jumblemorph"); // Silly Card
+  // const result = await getExactByName("Dr. Julius Jumblemorph"); // Silly Card - Silver Bordered
+  // const result = await getExactByName("Anax and Cymede & Kynaios and Tiro"); // Silly Card - Test
 
   let secondFace = null;
 
