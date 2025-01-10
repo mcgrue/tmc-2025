@@ -5,6 +5,7 @@ import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { type JankTablet } from "./JankTablet";
 import { type JankPackNumber } from "./JankPackNumber";
 import { COLORS } from "@/lib/styles";
+import * as Scry from "scryfall-sdk";
 
 export function getPackColor(pack: JankPackNumber | undefined): string {
   if (!pack) {
@@ -53,10 +54,16 @@ export async function rollJanklord(
       // @ts-expect-error: Object is possibly 'null'.
       url: result.card_faces[1].image_uris.normal,
       price: 0,
+      cardData: result,
     };
   }
 
-  function makeCard(name: string, url: string, price: number): ScryCardView {
+  function makeCard(
+    name: string,
+    url: string,
+    price: number,
+    cardData: Scry.Card,
+  ): ScryCardView {
     const displayName = name
       .split(", ")
       .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));
@@ -66,9 +73,10 @@ export async function rollJanklord(
     // displayName.push(", The Freshmaker");
 
     return {
-      url: url,
+      url,
       name: displayName,
-      price: price,
+      price,
+      cardData,
     };
   }
 
@@ -78,10 +86,11 @@ export async function rollJanklord(
     result.card_faces[0].image_uris.normal,
     // @ts-expect-error: Object is possibly 'null'.
     result.prices.usd ? result.prices.usd : result.prices.usd_foil,
+    result,
   );
 
   const side2 = secondFace
-    ? makeCard(secondFace.name, secondFace.url, secondFace.price)
+    ? makeCard(secondFace.name, secondFace.url, secondFace.price, result)
     : undefined;
 
   // @ts-expect-error: Object is possibly 'null'.
@@ -136,6 +145,7 @@ export async function rollJanklord(
       partner.card_faces[0].image_uris.normal,
       // @ts-expect-error: Object is possibly 'null'.
       partner.prices.usd ? partner.prices.usd : partner.prices.usd_foil,
+      result,
     )
     : undefined;
 

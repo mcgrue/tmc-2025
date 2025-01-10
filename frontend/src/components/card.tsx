@@ -24,7 +24,9 @@ function renderCardImage(props: RenderCardImageProps): JSX.Element {
   return (
     <div>
       <div style={{ position: "relative", display: "inline-block" }}>
-        {!sillinessAllowed && cardData?.border_color != "silver" && (
+        {/* <h1>cardData: {cardData ? "yes" : "no"}</h1>
+        <h1>border_color: {cardData?.border_color}</h1> */}
+        {!sillinessAllowed && cardData?.border_color == "silver" && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 100 100"
