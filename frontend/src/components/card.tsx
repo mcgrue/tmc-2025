@@ -1,19 +1,19 @@
 import Image from "next/image";
-import { type ScryCard } from "@/lib/scryfall/ScryCard";
-import { BelerenTitle } from "@/fonts/Beleren";
 import { JSX } from "react";
 
-const BACKGROUND_COLOR = "#222";
+import { BelerenTitle } from "@/fonts/Beleren";
+import { type JankPackNumber } from "@/lib/janklord/JankPackNumber";
+import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { COLORS } from "@/lib/styles";
+import { getPackColor } from "@/lib/janklord";
 
-interface CardThingProps {
-  card: ScryCard;
-  side2: ScryCard | undefined;
-  partner: ScryCard | undefined;
-  jankPrice: number;
-  fetchTime: string;
-}
+function renderCardImage(
+  name: string,
+  url: string,
+  pack?: JankPackNumber
+): JSX.Element {
+  const BACKGROUND_COLOR = getPackColor(pack);
 
-function renderCardImage(name: string, url: string): JSX.Element {
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
       <div
@@ -65,17 +65,27 @@ function renderCardImage(name: string, url: string): JSX.Element {
         alt={name}
         width={250}
         height={348}
-        style={{ margin: "auto" }}
+        style={{
+          margin: "auto",
+          minWidth: "250px",
+          minHeight: "348px",
+          maxWidth: "250px",
+          maxHeight: "348px",
+        }}
       />
     </div>
   );
 }
 
-function renderCard(
-  card: ScryCard,
-  fetchtimeText?: string,
-  jankPrice?: number
-): JSX.Element {
+type RenderCardProps = {
+  card: ScryCard;
+  fetchtimeText?: string;
+  jankPrice?: number;
+  pack?: JankPackNumber | undefined;
+};
+
+function renderCard(props: RenderCardProps): JSX.Element {
+  const { card, fetchtimeText, jankPrice, pack } = props;
   const names: string[] = Array.isArray(card.name) ? card.name : [card.name];
 
   const invalid = jankPrice && card.price > jankPrice;
@@ -90,13 +100,15 @@ function renderCard(
         paddingRight: "10px",
       }}
     >
-      {renderCardImage(card.name[0], card.url)}
+      {renderCardImage(card.name[0], card.url, pack)}
       <div style={{ textAlign: "center" }}>
         {names.map((name, index) => (
           <h1
             key={index}
             style={{
-              color: invalid ? "red" : "antiquewhite",
+              color: invalid
+                ? COLORS.FONT_READABLE_ERROR
+                : COLORS.FONT_READABLE,
               textDecoration: invalid ? "line-through" : "none",
               fontSize: index === 0 ? "2em" : "1em",
               marginTop: index === 0 ? "0" : "-.5em",
@@ -122,19 +134,32 @@ function renderCard(
   );
 }
 
+interface CardThingProps {
+  card: ScryCard;
+  side2: ScryCard | undefined;
+  partner: ScryCard | undefined;
+  jankPrice: number;
+  fetchTime: string;
+  pack?: JankPackNumber;
+}
+
 export function MagicCardWithPrice({
   card,
   side2,
   partner,
   jankPrice,
   fetchTime,
-}: CardThingProps): JSX.Element {
-  const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
+  pack,
+}: CardThingProps) {
+  let BACKGROUND_COLOR = getPackColor(pack);
+  const fetchtimeText = fetchTime
+    ? ` as of ${fetchTime} ${BACKGROUND_COLOR}`
+    : "";
+  const mainCard = renderCard({ card, fetchtimeText, pack });
+  const backCard = side2 ? renderCard({ card: side2, pack }) : undefined;
 
-  const mainCard = renderCard(card, fetchtimeText);
-  const backCard = side2 ? renderCard(side2) : undefined;
   const partnerCard = partner
-    ? renderCard(partner, fetchtimeText, jankPrice)
+    ? renderCard({ card: partner, fetchtimeText, jankPrice, pack })
     : undefined;
 
   return (

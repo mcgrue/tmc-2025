@@ -2,6 +2,24 @@ import { format } from "date-fns";
 
 import { getExactByName, getJank, getRandom } from "@/lib/scryfall";
 import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { type JankTablet } from "./JankTablet";
+import { type JankPackNumber } from "./JankPackNumber";
+import { COLORS } from "@/lib/styles";
+
+export function getPackColor(pack: JankPackNumber | undefined): string {
+  if (!pack) {
+    return COLORS.CARD_BG;
+  }
+
+  switch (pack) {
+    case 1:
+      return COLORS.CARD_BG_PACK_1;
+    case 2:
+      return COLORS.CARD_BG_PACK_2;
+    case 3:
+      return COLORS.CARD_BG_PACK_3;
+  }
+}
 
 function extractPartnerWithName(text: string) {
   if (!text) {
@@ -124,11 +142,3 @@ export async function rollJanklord(
 
   return { card, side2, partner, fetchTime, jankPrice };
 }
-
-export type JankTablet = {
-  card: ScryCard;
-  side2: ScryCard | undefined;
-  partner: ScryCard | undefined;
-  jankPrice: number;
-  fetchTime: string;
-};
