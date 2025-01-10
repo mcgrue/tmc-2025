@@ -3,10 +3,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <footer
-      className="row-start-3 flex gap-6 flex-wrap items-center justify-center"
-      style={{ color: "#888" }}
-    >
+    <footer className="flex items-right justify-between h-20 px-4 leading-6 text-gray-700 border-t border-gray-600/[.25] border-solid sm:grid sm:auto-cols-auto sm:grid-cols-3 sm:px-6 lg:px-8">
       <Link
         href="/"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
