@@ -6,7 +6,6 @@ import { type JankPackNumber } from "@/lib/janklord/JankPackNumber";
 import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { COLORS } from "@/lib/styles";
 import { getPackColor } from "@/lib/janklord";
-import { Border } from "scryfall-sdk";
 
 type RenderCardImageProps = {
   cardView: ScryCardView;
@@ -136,7 +135,6 @@ type RenderCardProps = {
 
 function renderCard(props: RenderCardProps): JSX.Element {
   const { cardView, fetchtimeText, jankPrice, pack, sillinessAllowed } = props;
-  const card = cardView.cardData;
   const names: string[] = Array.isArray(cardView.name)
     ? cardView.name
     : [cardView.name];
@@ -210,7 +208,7 @@ export function MagicCardWithPrice({
   pack,
   sillinessAllowed,
 }: CardThingProps) {
-  let BACKGROUND_COLOR = getPackColor(pack);
+  const BACKGROUND_COLOR = getPackColor(pack);
   const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
   const mainCard = renderCard({
     cardView: card,
