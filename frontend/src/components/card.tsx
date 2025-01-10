@@ -152,9 +152,7 @@ export function MagicCardWithPrice({
   pack,
 }: CardThingProps) {
   let BACKGROUND_COLOR = getPackColor(pack);
-  const fetchtimeText = fetchTime
-    ? ` as of ${fetchTime} ${BACKGROUND_COLOR}`
-    : "";
+  const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
   const mainCard = renderCard({ card, fetchtimeText, pack });
   const backCard = side2 ? renderCard({ card: side2, pack }) : undefined;
 
