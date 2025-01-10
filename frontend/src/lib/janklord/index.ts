@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 
 import { getExactByName, getJank, getRandom } from "@/lib/scryfall";
-import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { type JankTablet } from "./JankTablet";
 import { type JankPackNumber } from "./JankPackNumber";
 import { COLORS } from "@/lib/styles";
@@ -35,12 +35,13 @@ export async function rollJanklord(
   jankPrice: number,
   noSilliness: boolean,
 ): Promise<JankTablet> {
-  const result = await getJank(jankPrice, noSilliness);
-  // const result = await getExactByName("Brallin, Skyshark Rider");
-  // const result = await getExactByName("Amy Pond");
-  // const result = await getExactByName("The Eighth Doctor");
-  // const result = await getExactByName("Alena, Kessig Trapper");
-  // const result = await getExactByName("Faceless One");
+  // const result = await getJank(jankPrice, noSilliness);
+  // const result = await getExactByName("Brallin, Skyshark Rider"); // Partner with Shabraz, the Skyshark
+  // const result = await getExactByName("Amy Pond"); // TODO: Partner with Rory, the Last Centurion + Doctor's Companion
+  // const result = await getExactByName("The Eighth Doctor"); // Time Lord
+  // const result = await getExactByName("Alena, Kessig Trapper"); // Partner (not with)
+  // const result = await getExactByName("Faceless One"); // Choose a Background
+  const result = await getExactByName("Dr. Julius Jumblemorph"); // Silly Card
 
   let secondFace = null;
 
@@ -55,7 +56,7 @@ export async function rollJanklord(
     };
   }
 
-  function makeCard(name: string, url: string, price: number): ScryCard {
+  function makeCard(name: string, url: string, price: number): ScryCardView {
     const displayName = name
       .split(", ")
       .map((subtitle, index) => (index === 0 ? subtitle : `, ${subtitle}`));

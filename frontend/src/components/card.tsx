@@ -3,92 +3,138 @@ import { JSX } from "react";
 
 import { BelerenTitle } from "@/fonts/Beleren";
 import { type JankPackNumber } from "@/lib/janklord/JankPackNumber";
-import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { COLORS } from "@/lib/styles";
 import { getPackColor } from "@/lib/janklord";
+import { Border } from "scryfall-sdk";
 
-function renderCardImage(
-  name: string,
-  url: string,
-  pack?: JankPackNumber
-): JSX.Element {
+type RenderCardImageProps = {
+  cardView: ScryCardView;
+  pack?: JankPackNumber;
+  sillinessAllowed?: boolean;
+};
+
+function renderCardImage(props: RenderCardImageProps): JSX.Element {
+  const { cardView, pack, sillinessAllowed } = props;
+  const { name, url, cardData } = cardView;
   const BACKGROUND_COLOR = getPackColor(pack);
 
+  const altName = Array.isArray(name) ? name.join() : name;
+
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "8px",
-          height: "8px",
-          backgroundColor: BACKGROUND_COLOR,
-          clipPath: "polygon(0 0, 100% 0, 0 100%)",
-        }}
-      ></div>
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          width: "8px",
-          height: "8px",
-          backgroundColor: BACKGROUND_COLOR,
-          clipPath: "polygon(100% 0, 100% 100%, 0 0)",
-        }}
-      ></div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "8px",
-          height: "8px",
-          backgroundColor: BACKGROUND_COLOR,
-          clipPath: "polygon(0 100%, 100% 100%, 0 0)",
-        }}
-      ></div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          width: "8px",
-          height: "8px",
-          backgroundColor: BACKGROUND_COLOR,
-          clipPath: "polygon(100% 100%, 100% 0, 0 100%)",
-        }}
-      ></div>
-      <Image
-        src={url}
-        alt={name}
-        width={250}
-        height={348}
-        style={{
-          margin: "auto",
-          minWidth: "250px",
-          minHeight: "348px",
-          maxWidth: "250px",
-          maxHeight: "348px",
-        }}
-      />
+    <div>
+      <div style={{ position: "relative", display: "inline-block" }}>
+        {!sillinessAllowed && cardData?.border_color != "silver" && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              fill: "red",
+              opacity: 0.5,
+            }}
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="100"
+              y2="100"
+              stroke="red"
+              strokeWidth="10"
+            />
+            <line
+              x1="100"
+              y1="0"
+              x2="0"
+              y2="100"
+              stroke="red"
+              strokeWidth="10"
+            />
+          </svg>
+        )}
+
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "8px",
+            height: "8px",
+            backgroundColor: BACKGROUND_COLOR,
+            clipPath: "polygon(0 0, 100% 0, 0 100%)",
+          }}
+        ></div>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "8px",
+            height: "8px",
+            backgroundColor: BACKGROUND_COLOR,
+            clipPath: "polygon(100% 0, 100% 100%, 0 0)",
+          }}
+        ></div>
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "8px",
+            height: "8px",
+            backgroundColor: BACKGROUND_COLOR,
+            clipPath: "polygon(0 100%, 100% 100%, 0 0)",
+          }}
+        ></div>
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            width: "8px",
+            height: "8px",
+            backgroundColor: BACKGROUND_COLOR,
+            clipPath: "polygon(100% 100%, 100% 0, 0 100%)",
+          }}
+        ></div>
+        <Image
+          src={url}
+          alt={altName}
+          width={250}
+          height={348}
+          style={{
+            margin: "auto",
+            minWidth: "250px",
+            minHeight: "348px",
+            maxWidth: "250px",
+            maxHeight: "348px",
+          }}
+        />
+      </div>
     </div>
   );
 }
 
 type RenderCardProps = {
-  card: ScryCard;
+  cardView: ScryCardView;
   fetchtimeText?: string;
   jankPrice?: number;
   pack?: JankPackNumber | undefined;
+  sillinessAllowed?: boolean;
 };
 
 function renderCard(props: RenderCardProps): JSX.Element {
-  const { card, fetchtimeText, jankPrice, pack } = props;
-  const names: string[] = Array.isArray(card.name) ? card.name : [card.name];
+  const { cardView, fetchtimeText, jankPrice, pack, sillinessAllowed } = props;
+  const card = cardView.cardData;
+  const names: string[] = Array.isArray(cardView.name)
+    ? cardView.name
+    : [cardView.name];
 
-  const invalid = jankPrice && card.price > jankPrice;
+  const invalid = jankPrice && cardView.price > jankPrice;
 
   return (
     <div
@@ -100,7 +146,11 @@ function renderCard(props: RenderCardProps): JSX.Element {
         paddingRight: "10px",
       }}
     >
-      {renderCardImage(card.name[0], card.url, pack)}
+      {renderCardImage({
+        cardView,
+        pack,
+        sillinessAllowed,
+      })}
       <div style={{ textAlign: "center" }}>
         {names.map((name, index) => (
           <h1
@@ -126,7 +176,7 @@ function renderCard(props: RenderCardProps): JSX.Element {
             textDecoration: invalid ? "line-through" : "none",
           }}
         >
-          ${card.price} (USD)
+          ${cardView.price} (USD)
         </span>
         {fetchtimeText}
       </div>
@@ -135,12 +185,13 @@ function renderCard(props: RenderCardProps): JSX.Element {
 }
 
 interface CardThingProps {
-  card: ScryCard;
-  side2: ScryCard | undefined;
-  partner: ScryCard | undefined;
+  card: ScryCardView;
+  side2: ScryCardView | undefined;
+  partner: ScryCardView | undefined;
   jankPrice: number;
   fetchTime: string;
   pack?: JankPackNumber;
+  sillinessAllowed?: boolean;
 }
 
 export function MagicCardWithPrice({
@@ -150,14 +201,28 @@ export function MagicCardWithPrice({
   jankPrice,
   fetchTime,
   pack,
+  sillinessAllowed,
 }: CardThingProps) {
   let BACKGROUND_COLOR = getPackColor(pack);
   const fetchtimeText = fetchTime ? ` as of ${fetchTime}` : "";
-  const mainCard = renderCard({ card, fetchtimeText, pack });
-  const backCard = side2 ? renderCard({ card: side2, pack }) : undefined;
+  const mainCard = renderCard({
+    cardView: card,
+    fetchtimeText,
+    pack,
+    sillinessAllowed,
+  });
+  const backCard = side2
+    ? renderCard({ cardView: side2, pack, sillinessAllowed })
+    : undefined;
 
   const partnerCard = partner
-    ? renderCard({ card: partner, fetchtimeText, jankPrice, pack })
+    ? renderCard({
+        cardView: partner,
+        fetchtimeText,
+        jankPrice,
+        pack,
+        sillinessAllowed,
+      })
     : undefined;
 
   return (

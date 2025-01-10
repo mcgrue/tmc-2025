@@ -5,8 +5,9 @@ import { BelerenTitle } from "@/fonts/Beleren";
 import React, { useState } from "react";
 
 import { MagicCardWithPrice } from "@/components/card";
-import { rollJanklord, type JankTablet } from "@/lib/janklord";
-import { type ScryCard } from "@/lib/scryfall/ScryCard";
+import { rollJanklord } from "@/lib/janklord";
+import { type JankTablet } from "@/lib/janklord/JankTablet";
+import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { toJankPackNumber } from "@/lib/janklord/JankPackNumber";
 
 import { MAIN_CONTENT_STYLE, COLORS } from "@/lib/styles";
@@ -15,7 +16,7 @@ const JANK_PRICE = 0.79;
 
 // const { card, side2, partner, fetchTime } = await rollJanklord(JANK_PRICE);
 
-const emptyCard: ScryCard = {
+const emptyCard: ScryCardView = {
   url: "",
   name: "",
   price: 0,
@@ -121,6 +122,7 @@ export default function DrawJankTablet() {
                 jankPrice={JANK_PRICE}
                 fetchTime={element.fetchTime}
                 pack={toJankPackNumber(index + 1)}
+                sillinessAllowed={sillinessAllowed}
               />
             ))}
           </div>
