@@ -1,0 +1,13 @@
+.footer-disclaimer {
+  font-size: 0.5em;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 2em;
+  color: rgba(255, 255, 255, 0.25);
+
+  @media (min-width: 768px) {
+    font-size: 0.75em; /* Adjust as needed */
+    padding-left: 30%;
+    padding-right: 30%;
+  }
+}

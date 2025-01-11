@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import "./footer.css";
 
 const BottomNav = () => {
   return (
@@ -54,15 +55,7 @@ const BottomNav = () => {
 
 const Disclaimer = () => {
   return (
-    <div
-      style={{
-        fontSize: "0.75em",
-        paddingLeft: "30%",
-        paddingRight: "30%",
-        marginBottom: "2em",
-        color: "rgba(255, 255, 255, 0.25)",
-      }}
-    >
+    <div className="footer-disclaimer">
       Portions of this site are unofficial Fan Content permitted under the
       Wizards of the Coast Fan Content Policy. The literal and graphical
       information presented on this site about Magic: The Gathering, including
