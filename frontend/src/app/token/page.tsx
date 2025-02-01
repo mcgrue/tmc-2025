@@ -5,7 +5,7 @@ import { BelerenTitle } from "@/fonts/Beleren";
 import React, { useState } from "react";
 
 import { MagicCardWithPrice } from "@/components/card";
-import { rollJanklord } from "@/lib/janklord";
+import { rollToken } from "@/lib/janklord";
 import { type JankTablet } from "@/lib/janklord/JankTablet";
 import { type ScryCardView } from "@/lib/scryfall/ScryCardView";
 import { toJankPackNumber } from "@/lib/janklord/JankPackNumber";
